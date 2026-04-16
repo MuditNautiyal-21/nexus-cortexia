@@ -7,9 +7,12 @@ Pick your platform. Follow the three lines underneath. Go.
 ## Claude Code (terminal / VS Code extension)
 
 ```
-cp -r nexus-cortexia/ ~/.claude/skills/
-cp nexus-cortexia/commands/* ~/.claude/commands/
+cp -r nexus-cortexia ~/.claude/skills/
+cp -r nexus-cortexia/commands/* ~/.claude/commands/
 ```
+
+The `-r` on the second line matters: the `commands/nexus/` subdirectory
+is how the `/nexus:decompose` colon syntax works in Claude Code.
 
 Then in any project:
 
@@ -24,7 +27,7 @@ and Claude Code will auto-trigger the skill based on the description.
 **Windows (PowerShell):**
 ```powershell
 Copy-Item -Recurse nexus-cortexia "$env:USERPROFILE\.claude\skills\"
-Copy-Item nexus-cortexia\commands\* "$env:USERPROFILE\.claude\commands\"
+Copy-Item -Recurse nexus-cortexia\commands\* "$env:USERPROFILE\.claude\commands\"
 ```
 
 ---
@@ -33,8 +36,16 @@ Copy-Item nexus-cortexia\commands\* "$env:USERPROFILE\.claude\commands\"
 
 1. Open any project in Claude Desktop.
 2. Go to **Project instructions** (the settings gear on the project).
-3. Paste the full contents of `nexus-cortexia/SKILL.md` into the instructions.
+3. Paste the contents of `nexus-cortexia/SKILL-compact.md` into the
+   instructions. (The full `SKILL.md` is 11KB and may exceed the project
+   instructions size limit on some tiers. The compact variant fits inside
+   a few KB and covers the same five protocols in summary form.)
 4. Save.
+
+**Caveat on state persistence:** Claude Desktop does not give the LLM
+file-system access, so `.nexus-cortexia/state.json` resume flow doesn't
+work here. Each conversation is independent. For multi-session projects,
+use Claude Code instead or paste the previous decomposition manually.
 
 To invoke, either:
 - Say "use nexus" or "run the full pipeline" in your message, or
@@ -58,6 +69,10 @@ Invoke with bracketed triggers: `[NEXUS] Refactor auth to use JWT with refresh t
 Cursor's agent mode will follow the protocol. The slash commands won't work
 (Cursor doesn't have Claude Code-style commands) but the bracket invocation
 does.
+
+State persistence works on Cursor if you let the agent write to
+`.nexus-cortexia/state.json`. Resume flow depends on the agent reading it
+back in a new conversation, which is manual rather than automatic.
 
 ---
 
@@ -93,6 +108,11 @@ The LLM will read the protocol, decompose the project, debate the approach,
 execute, and review. Quality depends on the model. Runs well on GPT-4 and
 above, Gemini Pro and above, and Claude at any capability level. Weaker
 models may struggle with the decomposition stage.
+
+On ChatGPT and Gemini there is no persistent state between conversations.
+You'll need to paste the prior decomposition back into the new chat if you
+want to resume. Use the compact variant (`SKILL-compact.md`) if the
+system prompt budget is tight.
 
 ---
 

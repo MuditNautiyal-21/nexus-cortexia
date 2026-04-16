@@ -1,6 +1,6 @@
 ---
 name: nexus-cortexia
-version: 1.0.0
+version: 1.0.1
 description: >
   Orchestration layer for complex software projects. Makes Claude decompose
   work, debate approaches, and ship working code without burning tokens on
@@ -222,13 +222,14 @@ nexus-cortexia/
 ├── QUICKSTART.md               ← per-platform setup and first run
 ├── commands/                   ← slash commands for Claude Code
 │   ├── nexus.md                ← /nexus
-│   ├── nexus-decompose.md      ← /nexus:decompose
-│   ├── nexus-debate.md         ← /nexus:debate
-│   ├── nexus-execute.md        ← /nexus:execute
-│   ├── nexus-review.md         ← /nexus:review
-│   ├── nexus-resume.md         ← /nexus:resume
-│   ├── nexus-lean.md           ← /nexus:lean
-│   └── nexus-thorough.md       ← /nexus:thorough
+│   └── nexus/
+│       ├── decompose.md        ← /nexus:decompose
+│       ├── debate.md           ← /nexus:debate
+│       ├── execute.md          ← /nexus:execute
+│       ├── review.md           ← /nexus:review
+│       ├── resume.md           ← /nexus:resume
+│       ├── lean.md             ← /nexus:lean
+│       └── thorough.md         ← /nexus:thorough
 ├── skills/
 │   ├── core/SKILL.md           ← core behavioral rules, always loaded
 │   ├── decomposer/SKILL.md     ← task decomposition protocol

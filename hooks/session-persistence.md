@@ -40,6 +40,12 @@ directory should be git-ignored.
   },
   "recurring_issues": [
     {"pattern": "missing null check on DB response", "seen_in": ["task-2", "task-4"]}
+  ],
+  "failed_tasks": [
+    {"task_id": "task-3", "reason": "API endpoint returned 500 on retry", "retry_count": 1}
+  ],
+  "blocked_tasks": [
+    {"task_id": "task-6", "blocked_on": "task-3"}
   ]
 }
 ```
@@ -61,6 +67,10 @@ directory should be git-ignored.
 - `compressed_outputs` (object, keys are task ids)
 - `recurring_issues` (array of `{pattern: string, seen_in: array of task ids}`),
   maintained by the reviewer to flag issues that appear across multiple tasks
+- `failed_tasks` (array of `{task_id: string, reason: string, retry_count: integer}`),
+  written by the executor when a task fails after its retry
+- `blocked_tasks` (array of `{task_id: string, blocked_on: string}`),
+  downstream tasks that can't run because an ancestor failed
 
 ## Validation before resume
 
@@ -80,6 +90,23 @@ Before using state.json, check:
 If any check fails, stop. Do not resume automatically. Ask the user whether
 to repair the file or re-run decomposition from scratch.
 
+### Programmatic validator
+
+For users who want an enforceable check rather than trusting the LLM to
+self-validate, run the bundled script:
+
+```
+python3 scripts/validate_state.py .nexus-cortexia/state.json
+```
+
+Exits 0 if valid, non-zero with specific error messages otherwise. The
+script mirrors the schema in this file and also scans free-text fields
+(`project_aim`, task titles, task descriptions) for prompt-injection
+patterns like "ignore previous instructions."
+
+If you use Claude Code with pre-session hooks, you can wire this script
+in so every resume is validated automatically.
+
 ## When to persist
 
 - End of any session where the project isn't finished
@@ -93,6 +120,20 @@ At the start of the next session, read and validate the state file, then
 pick up where you left off. You have the task graph, you know what's done,
 and you have compressed outputs from completed work. No need to re-plan or
 re-discuss finished tasks.
+
+## Concurrency
+
+`state.json` has no built-in locking. If two sessions edit the same project
+at the same time, writes will race and one side's updates will be lost.
+
+Recommended: work on a given project from a single session at a time. If
+you need to branch, copy `.nexus-cortexia/` to a separate directory and
+merge the two state files manually at the end.
+
+If you must run two sessions in parallel and want basic protection, create
+`.nexus-cortexia/state.json.lock` before writing and delete it after. The
+lock is advisory; nothing enforces it. Future versions may add real
+file-locking via `flock` or similar once there's a concrete demand.
 
 ## Cleanup
 

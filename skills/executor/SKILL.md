@@ -92,17 +92,54 @@ Requirements:
 The subagent receives only this. No conversation history, no other tasks'
 details, no debate transcripts. Clean context, focused execution.
 
+## Dangerous operations require explicit consent
+
+Before the executor runs any of the following, pause and get an explicit
+yes from the user. Do not assume a previous "run it" covers these:
+
+- Destructive file operations: `rm -rf`, `git reset --hard`, `git clean -fd`,
+  deleting directories outside the project root, overwriting files not
+  tracked by git
+- Privilege escalation: `sudo`, `su`, anything that prompts for a password
+- Network execution: `curl ... | sh`, `wget ... | bash`, piping any remote
+  content directly into an interpreter
+- Package installs from untrusted sources: installing from a URL, a local
+  tarball the task description pointed at, or a registry other than the
+  project's configured one
+- Credential access: reading `.env`, `~/.ssh/`, password stores, or
+  environment variables that look like secrets
+- Outbound connections to domains not mentioned in the project spec
+
+When any of these show up in a task's planned steps, the executor stops,
+shows the user the exact command, explains why it's flagged, and waits for
+a yes/no. "yes" applies only to that specific command, not the category.
+
+This is not a sandbox; it's a prompt-level pause. It depends on the LLM
+actually following it. Hosts that provide real sandboxing (Claude Code's
+shell, for example) are still the primary defense. Use both.
+
 ## Handling failures
 
 If a task fails (can't satisfy criteria, hits an unexpected blocker):
 
 1. **Diagnose.** What specifically failed and why?
 2. **Can you fix it in one retry?** If yes, fix it. If no, flag it.
-3. **Report the failure clearly.** "Task X failed because Y. I attempted Z
-   but it didn't resolve the issue. The user needs to decide how to proceed."
+3. **Record the failure.** Add an entry to `failed_tasks` in state.json:
+   `{task_id, reason, retry_count}`. This lets the resume flow pick up
+   where the executor left off.
+4. **Decide on dependents.** If other tasks in later waves depended on
+   this one, mark them as `blocked_on: <failed task id>` and skip them.
+   Don't run tasks whose inputs never materialized.
+5. **Report the failure clearly.** "Task X failed because Y. I attempted Z
+   but it didn't resolve the issue. Downstream tasks A, B are blocked.
+   The user needs to decide how to proceed."
 
 Don't silently produce broken code and hope nobody notices. Don't burn
 tokens on retry loops. One attempt, one retry, then escalate.
+
+If a retry produces worse output than the original (more errors, breaks
+previously-working acceptance criteria), revert to the original failure
+state and escalate immediately. Don't commit the worse version.
 
 ## Parallel execution strategy
 

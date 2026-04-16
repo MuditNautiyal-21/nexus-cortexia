@@ -55,6 +55,13 @@ across reviewers.
   synthesize a final plan, move on.
 - **Score < 0.6**: genuine disagreement. Escalate.
 
+The 0.6 threshold is a tunable default, not a measured optimum. Lower it
+(to 0.5 or 0.4) if you want fewer escalations and are willing to accept
+more "modify" suggestions as good-enough consensus. Raise it (to 0.75)
+if you want tighter agreement before proceeding. The user can override
+for the session with "use a consensus threshold of X" and the executor
+should respect that for subsequent decisions.
+
 Most tasks resolve here. The proposal is usually decent, the reviewers catch
 a few things, the modifications get folded in, everyone moves on. This is
 the 80% case, and it costs only 2-3 agent turns total.
