@@ -90,7 +90,7 @@ To run the pipeline, prefix your request with a bracket trigger:
 ```
 
 The LLM will read the protocol, decompose the project, debate the approach,
-execute, and review. Quality depends on the model — works well on GPT-4 and
+execute, and review. Quality depends on the model. Runs well on GPT-4 and
 above, Gemini Pro and above, and Claude at any capability level. Weaker
 models may struggle with the decomposition stage.
 

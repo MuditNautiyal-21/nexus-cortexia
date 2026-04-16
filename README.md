@@ -1,9 +1,9 @@
 # Nexus Cortexia
 
-An orchestration brain you drop into any AI coding environment. It makes the
-AI decompose projects before building, debate approaches before committing,
-and stop wasting tokens on context it doesn't need. No API keys, no installs,
-no configuration.
+A drop-in orchestration layer for any AI coding environment. Makes the AI
+plan before building, think through approaches before committing, and stop
+wasting tokens on context it doesn't need. No API keys, no installs, no
+configuration.
 
 ## What it actually does
 
@@ -19,8 +19,8 @@ Nexus Cortexia breaks that cycle with five mandatory protocols:
 4. **Review** every non-trivial piece of code before calling it done
 5. **Guard tokens** throughout, compressing context, routing cheap tasks to cheap models
 
-The result: fewer rewrites, fewer wasted tokens, and code that works on
-the first or second attempt instead of the fifth.
+End result is less churn. Plans are solid before anything gets typed, so you
+don't spend five rounds untangling bad code.
 
 ## Install in 30 seconds
 
@@ -114,7 +114,7 @@ nexus-cortexia/
 ├── profiles/
 │   ├── lean.md              # Budget mode: minimum tokens
 │   ├── standard.md          # Default: balanced
-│   └── thorough.md          # Quality mode: production-grade rigor
+│   └── thorough.md          # Quality mode: debate everything, TDD, security pass
 ├── hooks/
 │   └── session-persistence.md # Save/restore state across sessions
 └── examples/
@@ -161,16 +161,15 @@ context waste (because agents are stateless), and compressed handoffs
 
 ## Profiles
 
-Pick the mode that fits your situation:
+Three modes, pick what fits:
 
-**Lean**: minimum tokens. Skip most discussion, brief reviews. For budget
-runs or simple projects. (~40-60% of standard cost)
-
-**Standard** (default): debate for moderate tasks, full review for non-trivial
-work. The sweet spot for most projects.
-
-**Thorough**: full debate for everything, TDD, security review pass. For
-production-critical code. (~150-200% of standard cost)
+- **Lean**: minimum tokens, skips most discussion, runs brief reviews. Good
+  for tight budgets or simple projects. About 40-60% of standard cost.
+- **Standard** (default): debate for moderate tasks, full review for
+  non-trivial work. The usual pick.
+- **Thorough**: full debate on everything, TDD, security review pass. For
+  production code or anything where a bug costs real money. About 150-200%
+  of standard.
 
 Tell the AI which profile to use: "Use nexus-cortexia in lean mode" or
 "thorough mode for this one."
