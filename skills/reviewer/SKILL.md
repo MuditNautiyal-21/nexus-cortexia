@@ -110,3 +110,18 @@ Specifically ask yourself:
 
 Self-review is harder than reviewing someone else's code because you have to
 fight confirmation bias. Force yourself to look for problems.
+
+## Recurring-issues scratchpad
+
+Keep a short running list of issues that keep showing up across tasks in
+this project. Examples: "implementer keeps forgetting to handle null
+responses from the DB client," "queries are going in without indexes,"
+"error messages leak internal state." Store it in
+`.nexus-cortexia/state.json` under `recurring_issues`, or in an equivalent
+working-state file if the persistence layer isn't in use.
+
+Before each new review, glance at the list. If the same class of bug shows
+up twice, add it to the acceptance criteria template for the remaining
+tasks so the implementer catches it up front. If an issue stops appearing
+for three consecutive tasks, drop it from the list. This keeps reviews
+sharper without carrying a bloated checklist.

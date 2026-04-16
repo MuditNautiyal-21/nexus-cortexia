@@ -71,15 +71,21 @@ AI to follow it. Invoke with `[NEXUS] <your request>`.
 
 **For full per-platform instructions with verification steps, see [QUICKSTART.md](./QUICKSTART.md).**
 
-## How to invoke (three options)
+## How to invoke
 
-| Method | Works on | Example |
-|--------|----------|---------|
-| Slash commands | Claude Code | `/nexus Build me a PR summary bot` |
-| Bracket trigger | Everything | `[NEXUS] Build me a PR summary bot` |
-| Natural language | Everything | `Build me a PR summary bot, use the full pipeline` |
+Each platform has a recommended primary method. The others work too, but
+stick with the primary unless you have a reason.
 
-All three produce the same result. Pick what fits your muscle memory.
+| Platform | Primary | Also works |
+|----------|---------|-----------|
+| Claude Code | Slash commands: `/nexus Build me a PR summary bot` | Bracket trigger, natural language |
+| Claude Desktop | Bracket trigger: `[NEXUS] Build me a PR summary bot` | Natural language |
+| Cursor, Windsurf, VS Code AI | Bracket trigger | Natural language |
+| ChatGPT, Gemini, other LLMs | Bracket trigger | Natural language |
+
+Natural language ("build me a PR summary bot, use nexus cortexia") works
+everywhere but is the least reliable. It depends on the model recognizing
+the trigger phrase inside the skill description.
 
 ## Project structure
 
@@ -139,25 +145,57 @@ It's the difference between "try to eat healthy" and a specific meal plan.
 
 ## Token savings
 
-A comparison based on real project patterns:
+These are **design targets**, not benchmarked numbers. Real savings depend on
+the project, the model, and how strictly the skill gets followed. If you run
+your own comparisons and want to contribute data, open a PR.
 
-| Project type | Without Nexus Cortexia | With Nexus Cortexia | Savings |
-|-------------|----------------------|---------------------|---------|
-| Small CLI tool | 15K-25K tokens | 7K-15K tokens | 40-55% |
-| Medium web app | 80K-150K tokens | 40K-80K tokens | 45-55% |
-| Large multi-service | 200K-400K tokens | 80K-160K tokens | 50-65% |
+| Project type | Without Nexus Cortexia (estimate) | Target with Nexus Cortexia | Target savings |
+|-------------|-----------------------------------|----------------------------|----------------|
+| Small CLI tool | 15K-25K tokens | 7K-15K tokens | ~40-55% |
+| Medium web app | 80K-150K tokens | 40K-80K tokens | ~45-55% |
+| Large multi-service | 200K-400K tokens | 80K-160K tokens | ~50-65% |
 
-The savings come from fewer retries (because the plan was solid), less
+The targets come from fewer retries (because the plan was solid), less
 context waste (because agents are stateless), and compressed handoffs
-(because dependency outputs are summarized to interfaces).
+(because dependency outputs are summarized to interfaces). Whether your
+project hits those numbers depends on how well the model follows the
+protocol and how much rework the original code needed.
 
 ## Works with
 
-- Claude Code and Claude Desktop (primary target)
-- Cursor, Windsurf, and VS Code with AI extensions
+Primary target (tested and tuned for these):
+
+- Claude Code
+- Claude Desktop
+
+Best-effort (the protocol is LLM-agnostic, but bracket triggers and
+slash commands behave differently across platforms):
+
+- Cursor, Windsurf, VS Code with AI extensions
 - OpenAI ChatGPT and GPT-based coding tools
 - Google Gemini
-- Any LLM that can follow multi-step instructions from a system prompt
+- Any other LLM that can follow multi-step instructions from a system prompt
+
+On non-Claude platforms, expect to drop slash commands and rely on bracket
+triggers or natural language. Quality varies with the model; weaker models
+may struggle with the decomposition stage or drift out of protocol mid-run.
+
+## Single-agent vs multi-agent
+
+Nexus Cortexia works in both modes.
+
+- **Single-agent mode** (the usual case on Claude Desktop, ChatGPT,
+  Gemini, Cursor chat): one LLM runs all five protocols sequentially by
+  itself. Decompose, then debate in its own head, then execute, then
+  review. This is the default path on most platforms.
+- **Multi-agent mode** (Claude Code with subagent dispatch, or any
+  platform that supports task-level agent spawning): independent tasks in
+  the same wave can run in parallel, and role prompts from `agents/` are
+  injected into fresh agent contexts.
+
+The protocols are the same either way. The only difference is whether the
+waves run in parallel or sequentially. If your host supports subagents,
+use them. If not, you still get the planning and review discipline.
 
 ## Profiles
 

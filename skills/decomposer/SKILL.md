@@ -55,6 +55,24 @@ schema task probably blocks the API endpoint tasks. The API tasks probably
 block the frontend tasks. Some tasks have no dependencies and can run in
 parallel from the start.
 
+### Step 3.5: Check for cycles
+
+Before grouping into waves, verify the dependency graph is a proper DAG.
+Walk every task's `depends_on` chain. If any chain loops back to a task
+already on it, you have a cycle and the graph is unbuildable.
+
+Common sources of cycles:
+
+- Two tasks that each claim they need the other's output (usually means
+  they should be one task, or one of them is mis-scoped)
+- A refactor that depends on a feature that depends on the refactor (the
+  refactor should be scheduled first, the feature second)
+- Circular imports modeled as task dependencies
+
+If you find a cycle, don't paper over it. Either merge the cyclic tasks
+into one, or rework the direction so one clearly precedes the other.
+Then re-verify.
+
 ### Step 4: Group into execution waves
 
 Tasks with no unfinished dependencies can run at the same time. Group them

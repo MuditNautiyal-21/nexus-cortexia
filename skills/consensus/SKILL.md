@@ -66,13 +66,17 @@ Each perspective argues their position in 1-2 focused paragraphs, directly
 addressing the concerns raised by others. No rehashing agreed points.
 
 Maximum 3 rounds. If you can't resolve it in 3 rounds, the disagreement is
-probably about taste rather than correctness, and you should just pick the
-majority position and move on.
+probably about taste rather than correctness. Don't keep spinning.
 
 ### Phase 4: Vote
 
-After debate, everyone votes one final time. Majority wins. Ties go to the
-original proposer's approach.
+After debate, everyone votes one final time. Majority wins.
+
+**On a tie, escalate to the user.** Present the competing approaches side
+by side with the key trade-offs and ask which to pick. Don't default to
+the original proposer. That bias toward the first instinct is exactly what
+consensus is supposed to prevent, and a tie after three rounds of debate
+is a signal the decision matters enough for the human to make it.
 
 ### Phase 5: Synthesize
 

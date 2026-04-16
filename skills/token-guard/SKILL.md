@@ -123,6 +123,27 @@ files you need, when you need them. If you realize mid-task that you need
 another file, read it then. Three targeted reads of 100 lines each costs
 less than one bulk read of 3000 lines.
 
+### 8. Lazy-load phase-specific sub-SKILLs
+
+The main `SKILL.md` lists paths like `skills/decomposer/SKILL.md`,
+`skills/consensus/SKILL.md`, `skills/executor/SKILL.md`, etc. Don't read
+all of them upfront.
+
+Read them only when the phase actually starts:
+
+- Entering decomposition? Read `skills/decomposer/SKILL.md` now.
+- Starting a consensus round? Read `skills/consensus/SKILL.md` now.
+- About to dispatch tasks? Read `skills/executor/SKILL.md` now.
+- About to review? Read `skills/reviewer/SKILL.md` now.
+
+Skip the read entirely for phases the project won't use. A trivial task
+that skips consensus doesn't need the consensus protocol in context. A
+project that skips decomposition (because it's already one small task)
+doesn't need the decomposer protocol loaded at all.
+
+Once a phase finishes, the sub-SKILL can drop out of active context. The
+main `SKILL.md` summary is enough to navigate to the next phase.
+
 ## Token budget tracking
 
 After each major phase, report approximate token usage:

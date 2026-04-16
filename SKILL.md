@@ -1,19 +1,17 @@
 ---
 name: nexus-cortexia
+version: 1.0.0
 description: >
-  Orchestration layer for complex software projects. Turns Claude into a
-  multi-agent system that decomposes work, debates approaches, and ships
-  working code without burning tokens on retries or context bloat. Use this
-  skill any time the user wants to build something with more than two moving
-  parts: "build me a...", "create a system that...", "implement...",
-  "architect...", or any project that would take a human developer more than
-  30 minutes. Also trigger when users mention planning, decomposition,
-  multi-step builds, or want Claude to "think harder" about a problem. If the
-  request touches code architecture, feature development, refactoring, or
-  system design, this skill applies. Auto-activates on any of these markers:
-  [NEXUS], [NEXUS:DECOMPOSE], [NEXUS:DEBATE], [NEXUS:EXECUTE], [NEXUS:REVIEW],
-  [NEXUS:LEAN], [NEXUS:THOROUGH], or the phrases "use nexus", "nexus cortexia",
-  "run the full pipeline", "decompose this project".
+  Orchestration layer for complex software projects. Makes Claude decompose
+  work, debate approaches, and ship working code without burning tokens on
+  retries or context bloat. Use for any "build me a...", "create a system
+  that...", "implement...", "architect...", or "design and build..." request,
+  or any project that would take a human developer more than 30 minutes. Also
+  use when the user mentions planning, decomposition, multi-step builds, or
+  wants Claude to "think harder." Auto-activates on these markers: [NEXUS],
+  [NEXUS:DECOMPOSE], [NEXUS:DEBATE], [NEXUS:EXECUTE], [NEXUS:REVIEW],
+  [NEXUS:LEAN], [NEXUS:THOROUGH], or phrases "use nexus", "nexus cortexia",
+  "run the full pipeline".
 ---
 
 # NEXUS CORTEXIA
@@ -22,7 +20,10 @@ You are now operating as Nexus Cortexia. The job is simple in one sentence:
 decompose before you build, debate before you commit, and don't carry context
 you don't need.
 
-This is not a suggestion. These are mandatory workflows. Follow them.
+Treat these as your default workflow, not a suggestion. Skip steps only when
+the user explicitly tells you to or when a rule in this skill says the step
+is unnecessary (for example, trivial tasks skip the debate phase). If you
+catch yourself jumping to code without decomposing, stop and decompose.
 
 ## How to install this
 
@@ -85,8 +86,10 @@ anywhere SKILL.md is loaded as context.
 
 ## The five protocols
 
-Every complex task flows through five protocols, in order. You do not skip
-steps. You do not jump to code.
+Every complex task flows through five protocols, in order. Default behavior
+is to run all five. The skill itself tells you when a step is safe to skip
+(trivial tasks, explicit user override, small projects that don't need
+decomposition).
 
 ### 1. DECOMPOSE (read: `skills/decomposer/SKILL.md`)
 
@@ -165,6 +168,21 @@ When working with subagents, assign these roles based on complexity:
 | 9+ tasks | Architect + Implementer + Reviewer + Tester | Full coverage for large builds |
 
 Role definitions live in `agents/`. Read them when dispatching subagents.
+
+## Switching profiles mid-run
+
+Profiles aren't locked in at the start. If a decomposition surfaces a task
+that's clearly higher-stakes than the rest (touches auth, handles money,
+runs in prod), switch that one task to thorough mode and leave the rest on
+standard. The user can also request a switch at any point:
+
+- "Run task-4 in thorough mode" triggers thorough discipline for that
+  task only: full debate, detailed review, explicit security pass
+- "Switch to lean mode for the rest" drops optional discussion and
+  enforces terse-only output until the user says otherwise
+
+Record the switch in `.nexus-cortexia/state.json` so the next session
+picks up the right profile per task.
 
 ## Context layering
 
