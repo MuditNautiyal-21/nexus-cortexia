@@ -87,13 +87,13 @@ until they sign off.
 [1-2 sentence summary of the approach]
 
 ## Wave 1 (N tasks, parallel)
-- [task-1] Title — complexity
+- [task-1] Title (complexity)
   Description. Acceptance: criteria.
-- [task-2] Title — complexity
+- [task-2] Title (complexity)
   Description. Acceptance: criteria.
 
 ## Wave 2 (N tasks, after wave 1)
-- [task-3] Title [depends: task-1] — complexity
+- [task-3] Title [depends: task-1] (complexity)
   Description. Acceptance: criteria.
 
 ## Summary

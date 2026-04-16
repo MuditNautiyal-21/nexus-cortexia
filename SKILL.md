@@ -70,12 +70,12 @@ the user's message contains any of these patterns:
 
 Start your message with one of these explicit triggers:
 
-- `[NEXUS]` — activate the full pipeline for the rest of the message
-- `[NEXUS:DECOMPOSE]` — decomposer only
-- `[NEXUS:DEBATE]` — consensus only
-- `[NEXUS:REVIEW]` — reviewer only
-- `[NEXUS:LEAN]` — full pipeline, lean profile
-- `[NEXUS:THOROUGH]` — full pipeline, thorough profile
+- `[NEXUS]` activates the full pipeline for the rest of the message
+- `[NEXUS:DECOMPOSE]` runs the decomposer only
+- `[NEXUS:DEBATE]` runs consensus only
+- `[NEXUS:REVIEW]` runs the reviewer only
+- `[NEXUS:LEAN]` runs the full pipeline in lean profile
+- `[NEXUS:THOROUGH]` runs the full pipeline in thorough profile
 
 Example: `[NEXUS] Build me a CLI that watches a directory and posts changed files to a webhook.`
 

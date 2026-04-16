@@ -15,23 +15,23 @@ Task graph: csv-to-json converter
 Simple CLI with one core function and some configuration options.
 
 Wave 1 (2 tasks, parallel)
-- [task-1] Set up project structure and CLI argument parsing — trivial
+- [task-1] Set up project structure and CLI argument parsing (trivial)
   Create main.py with argparse: input file, output file, mapping file (optional).
   Acceptance: runs with --help and shows usage.
 
-- [task-2] Write CSV parsing and column mapping logic — simple
+- [task-2] Write CSV parsing and column mapping logic (simple)
   Read CSV with csv module. If mapping file provided (JSON dict of old->new
   column names), apply it. Return list of dicts.
   Acceptance: correctly maps {"name": "full_name"} on a test CSV.
 
 Wave 2 (1 task, after wave 1)
-- [task-3] Write JSON output and wire everything together — simple
+- [task-3] Write JSON output and wire everything together (simple)
   Connect the CLI args to the CSV parser, write JSON output.
   Handle errors: file not found, invalid CSV, bad mapping file.
   Acceptance: end-to-end conversion works. Error messages are clear.
 
 Wave 3 (1 task, after wave 2)
-- [task-4] Write tests — simple
+- [task-4] Write tests (simple)
   Test happy path, empty CSV, missing file, invalid mapping.
   Acceptance: all tests pass.
 

@@ -34,17 +34,17 @@ cp nexus-cortexia/commands/* ~/.claude/commands/
 
 You now have these slash commands:
 
-- `/nexus <project>` — full pipeline
-- `/nexus:decompose <project>` — planning only
-- `/nexus:debate <question>` — consensus on a single decision
-- `/nexus:execute` — run the approved task graph
-- `/nexus:review <file>` — two-stage code review
-- `/nexus:resume` — continue a saved session
-- `/nexus:lean <project>` — lean profile
-- `/nexus:thorough <project>` — thorough profile
+- `/nexus <project>` runs the full pipeline
+- `/nexus:decompose <project>` for planning only
+- `/nexus:debate <question>` for consensus on a single decision
+- `/nexus:execute` runs the approved task graph
+- `/nexus:review <file>` runs a two-stage code review
+- `/nexus:resume` continues a saved session
+- `/nexus:lean <project>` uses the lean profile
+- `/nexus:thorough <project>` uses the thorough profile
 
-Or skip the commands entirely and just ask Claude to "build me X" — the
-skill auto-triggers on common patterns.
+Or skip the commands entirely and just ask Claude to "build me X". The skill
+auto-triggers on common patterns.
 
 ### Claude Desktop
 

@@ -16,47 +16,47 @@ Task graph: task management app
 Full-stack app with auth, CRUD, and real-time updates.
 
 Wave 1 (3 tasks, parallel)
-- [task-1] Project scaffolding and config — trivial
+- [task-1] Project scaffolding and config (trivial)
   Set up monorepo: /backend (FastAPI), /frontend (React+Vite), docker-compose
   for PostgreSQL. Environment config with pydantic-settings.
   Acceptance: docker-compose up starts Postgres, backend serves /health.
 
-- [task-2] Database models and migrations — simple
+- [task-2] Database models and migrations (simple)
   SQLAlchemy models: User (id, email, password_hash, created_at),
   Task (id, title, description, status, assignee_id, created_at, updated_at).
   Alembic migration.
   Acceptance: migrate creates tables, models match schema.
 
-- [task-3] Auth module — moderate
+- [task-3] Auth module (moderate)
   JWT auth: register (POST /auth/register), login (POST /auth/login),
   refresh (POST /auth/refresh). Bcrypt password hashing. 15-min access tokens,
   7-day refresh tokens. Dependency injection for protected routes.
   Acceptance: full auth flow works. Expired tokens return 401.
 
 Wave 2 (2 tasks, after wave 1)
-- [task-4] Task CRUD API [depends: task-2, task-3] — simple
+- [task-4] Task CRUD API [depends: task-2, task-3] (simple)
   GET/POST/PUT/DELETE for /tasks. Filtered by assignee. Pagination.
   Protected by auth middleware.
   Acceptance: all CRUD operations work. Only task owner can modify.
 
-- [task-5] WebSocket real-time updates [depends: task-2, task-3] — moderate
+- [task-5] WebSocket real-time updates [depends: task-2, task-3] (moderate)
   WebSocket endpoint at /ws. Broadcasts task creation, update, deletion
   to connected clients. Auth via token in connection params.
   Acceptance: creating a task in one browser tab appears in another.
 
 Wave 3 (2 tasks, after wave 2)
-- [task-6] React frontend: auth pages [depends: task-3] — simple
+- [task-6] React frontend: auth pages [depends: task-3] (simple)
   Login and register pages. Token storage in memory (not localStorage).
   Auth context provider. Protected route wrapper.
   Acceptance: can register, login, and access protected pages.
 
-- [task-7] React frontend: task board [depends: task-4, task-5] — moderate
+- [task-7] React frontend: task board [depends: task-4, task-5] (moderate)
   Kanban board with columns: todo, in-progress, done. Drag-and-drop to
   change status. Real-time updates via WebSocket.
   Acceptance: tasks appear on board, drag changes status, updates are live.
 
 Wave 4 (1 task, after wave 3)
-- [task-8] Integration tests and error handling [depends: all] — simple
+- [task-8] Integration tests and error handling [depends: all] (simple)
   Test the full flow: register, login, create task, move task, verify
   WebSocket update. Error handling for edge cases.
   Acceptance: all integration tests pass.

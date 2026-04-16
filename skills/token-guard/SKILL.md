@@ -128,11 +128,11 @@ less than one bulk read of 3000 lines.
 After each major phase, report approximate token usage:
 
 ```
-Phase: Decomposition — ~1200 tokens
-Phase: Consensus (4 tasks, 1 escalated) — ~14,000 tokens
-Phase: Execution (8 tasks) — ~32,000 tokens
-Phase: Review (6 reviews) — ~8,000 tokens
-Total: ~55,200 tokens
+Decomposition:                     ~1,200 tokens
+Consensus (4 tasks, 1 escalated):  ~14,000 tokens
+Execution (8 tasks):               ~32,000 tokens
+Review (6 reviews):                ~8,000 tokens
+Total:                             ~55,200 tokens
 ```
 
 This helps the user understand where their tokens went and whether the
