@@ -111,7 +111,7 @@ When dispatching subagents in parallel:
 - **Independent tasks go together.** If tasks share no dependencies, they
   can run simultaneously.
 - **Shared-state tasks run sequentially.** If two tasks modify the same file
-  or data structure, run them in order to avoid merge conflicts.
+  or data structure, run them one after the other to avoid merge conflicts.
 - **Budget-aware batching.** If you have 8 tasks in a wave but only budget
   for 4 agents, split into two batches of 4.
 
